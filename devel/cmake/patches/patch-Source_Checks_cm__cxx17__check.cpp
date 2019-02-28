@@ -1,15 +1,26 @@
-$NetBSD: patch-Source_Checks_cm__cxx17__check.cpp,v 1.2 2018/11/21 16:58:52 adam Exp $
-
-Test for an issue in the illumos headers related to C++17.
-
---- Source/Checks/cm_cxx17_check.cpp.orig	2018-11-20 14:49:09.000000000 +0000
-+++ Source/Checks/cm_cxx17_check.cpp
-@@ -1,6 +1,8 @@
+--- Source/Checks/cm_cxx17_check.cpp.orig	2019-02-01 14:35:27.000000000 +0100
++++ Source/Checks/cm_cxx17_check.cpp	2019-02-27 15:33:42.369529525 +0100
+@@ -1,9 +1,22 @@
  #include <cstdio>
 +#include <cassert>
++#include <iterator>
  #include <memory>
  #include <unordered_map>
 +#include <type_traits>
  
  int main()
  {
++  int a[] = { 0, 1, 2 };
++  auto ai = std::cbegin(a);
++
++  int b[] = { 2, 1, 0 };
++  auto bi = std::cend(b);
++
++  auto ci = std::size(a);
++
+   std::unique_ptr<int> u(new int(0));
+-  return *u;
++  
++  return *u + *ai + *(bi - 1) + (3 - static_cast<int>(ci));
+ }
++
